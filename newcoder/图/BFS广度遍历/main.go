@@ -25,7 +25,7 @@ func bfs(digits string) []string {
 	for i := range digits {
 		digit := int(digits[i]) - 48
 		letters := mmap[digit]
-		// 遍历队列，取得队列中已完成拼接的字符串
+		// 遍历队列,取得队列中已完成拼接的字符串
 		for range queue {
 			tmpStr := queue[0]
 			queue = queue[1:]

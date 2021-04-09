@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"study/go模块体验/并发判断二叉树相等/tree"
+	"study/module/并发/tree"
 )
 
 // Walk 步进 tree t 将所有的值从 tree 发送到 channel ch。

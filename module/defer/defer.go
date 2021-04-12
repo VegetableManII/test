@@ -3,8 +3,10 @@ package main
 import "fmt"
 
 func main() {
-	res := deferFc2()
+	res := deferFc3()
 	fmt.Println(res)
+	fmt.Println()
+	deferFc1()
 }
 func deferFc0() (v int) {
 	defer func() { v++ }()
@@ -30,4 +32,15 @@ func deferFc2() (r int) {
 	fmt.Printf("f: g = %d\n", g)
 
 	return g
+}
+func deferFc3() (r int) {
+	r = g
+	defer func() {
+		r = 200
+	}()
+
+	fmt.Printf("f: r = %d\n", r)
+
+	r = 0
+	return r
 }

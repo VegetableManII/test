@@ -28,27 +28,9 @@ func shellSort(arr []int) []int {
 	}
 	return arr
 }
-func sS(arr []int) {
-	len := len(arr)
-	for step := len / 2; step >= 1; step /= 2 {
-		// 插入排序
-
-		for i := step; i < len; i += step {
-			for j := i - step; j >= 0; j -= step {
-				// 满足插入则交换元素
-				if arr[j+step] < arr[j] {
-					arr[j+step], arr[j] = arr[j], arr[j+step]
-					continue
-				}
-				break
-			}
-
-		}
-	}
-}
 func main() {
-	arr := []int{3, 2, 1, 4, 5, 6, 3, 6, 7}
-	sS(arr)
+	arr := []int{3, 2, 4, 2, 6, 4, 4, 7, 8}
+	shellSort(arr)
 	fmt.Printf("%v\n", arr)
 
 }

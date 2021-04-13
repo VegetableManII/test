@@ -9,7 +9,7 @@ import (
 // 递归函数 切片要用取址
 func main() {
 	num := []int{1, 2, 3, 0, 0, 3, 0, 0, 2, 0, 0}
-	root := tree.CreateTree(num)
+	root := tree.CreateTree(num, 0)
 	// tree.PrintTree(root)
 	fmt.Println(isSymmetric(root))
 }

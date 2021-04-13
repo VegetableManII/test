@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-	t := CreateTree([]int{1, 2, 3})
+	t := CreateTree([]int{1, 2, 3}, -1)
 	Mirror(t)
 }
 

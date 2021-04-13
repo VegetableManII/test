@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	troot := CreateTree([]int{1, 2, 7, 8, -1, -1, 9, -1, -1, 4, -1, -1, 3, 5, -1, -1, 6, -1, -1})
+	troot := CreateTree([]int{1, 2, 7, 8, -1, -1, 9, -1, -1, 4, -1, -1, 3, 5, -1, -1, 6, -1, -1}, 0)
 	inorder(troot)
 }
 

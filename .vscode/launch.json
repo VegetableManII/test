@@ -9,10 +9,10 @@
             "type": "go",
             "request": "launch",
             "mode": "remote",
-            "remotePath": "/Users/jack/go/src/study/面试/huawei/t2",
+            "remotePath": "${filepath}",
             "host": "127.0.0.1",
             "port": 2345,
-            "program": "/Users/jack/go/src/study/面试/huawei/t2"
+            "program": "${filepath}"
         }
     ]
 }

@@ -17,10 +17,10 @@
             "type": "go",
             "request": "launch",
             "mode": "remote",
-            "remotePath": "/Users/jack/go/src/study/面试/huawei/t1/",
+            "remotePath": "/Users/jack/go/src/study/面试/huawei/T_2/",
             "port": 2345,
             "host": "127.0.0.1",
-            "program": "/Users/jack/go/src/study/面试/huawei/t1/",
+            "program": "/Users/jack/go/src/study/面试/huawei/T_2/",
         },
         
     ]

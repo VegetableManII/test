@@ -41,7 +41,7 @@ func rebuild(pre []int, vin []int) *TreeNode {
 		return nil
 	}
 	root := pre[0]
-	var rootIndex int
+	var rootIndex int // rootIndex 也能表示左枝或右枝有多少个孩子
 	// 找到每一分支的根节点
 	// 前序的第一个数字
 	// 中序的中间位置的数字  其左侧是左枝右侧是右枝

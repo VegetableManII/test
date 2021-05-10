@@ -18,6 +18,8 @@ func sift(li []int, low, high int) {
 		if j < high && li[j] < li[j+1] {
 			j++
 		}
+		// 如果父节点小于左孩子节点则更换父子节点
+		// 父节点下沉
 		if tmp < li[j] {
 			li[i] = li[j]
 			i = j
@@ -31,6 +33,7 @@ func sift(li []int, low, high int) {
 
 func heapSort(li []int) {
 	// 建立大根堆 无序
+	// 满足大根堆的性质
 	for i := len(li)/2 - 1; i >= 0; i-- {
 		sift(li, i, len(li)-1)
 		fmt.Println(li)
@@ -38,6 +41,7 @@ func heapSort(li []int) {
 	fmt.Println()
 	// 根据堆的性质进行调整 取出最大的元素（堆顶元素）重新调整堆
 	// 位于j前面的位无序区，j后面为有序区域
+	// 将根节点取出放入有序区然后调整大根堆此时根节点为第二大的元素
 	for j := len(li) - 1; j > 0; j-- {
 		li[0], li[j] = li[j], li[0]
 		sift(li, 0, j-1)

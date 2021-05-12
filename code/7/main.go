@@ -31,7 +31,7 @@ func quick(a []int, l, r int) {
 		for a[j] < a[mid] && i < j {
 			j--
 		}
-		a[mid] = a[j]
+		a[i] = a[j]
 		for a[i] > a[mid] && i < j {
 			i++
 		}

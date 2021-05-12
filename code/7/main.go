@@ -20,11 +20,12 @@ func quick(a []int, l, r int) {
 	mid := (r-l)>>1 + l
 	i, j := l, r-1
 	tmp := a[mid]
+	a[i], a[mid] = a[mid], a[i]
 	for i < j {
 		for i < j && a[j] <= tmp {
 			j--
 		}
-		a[mid] = a[j]
+		a[i] = a[j]
 		for i < j && a[i] >= tmp {
 			i++
 		}

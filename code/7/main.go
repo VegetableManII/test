@@ -1,23 +1,16 @@
 package main
 
-import "fmt"
-
-/**
- *
- * @param a int整型一维数组
- * @param n int整型
- * @param K int整型
- * @return int整型
- */
 func findKth(a []int, n int, K int) int {
 	// write code here
 	quick(a, 0, n)
-	return a[K]
+	return a[K-1]
 
 }
+
 func main() {
-	arr := []int{1, 3, 5, 2, 2}
-	fmt.Println(findKth(arr, 5, 3))
+	arr := []int{2, 3, 1}
+	quick(arr, 0, 3)
+
 }
 func quick(a []int, l, r int) {
 	if l >= r {
@@ -28,17 +21,17 @@ func quick(a []int, l, r int) {
 	i, j := l, r-1
 	tmp := a[mid]
 	for i < j {
-		for a[j] < a[mid] && i < j {
+		for i < j && a[j] <= tmp {
 			j--
 		}
-		a[i] = a[j]
-		for a[i] > a[mid] && i < j {
+		a[mid] = a[j]
+		for i < j && a[i] >= tmp {
 			i++
 		}
 		a[j] = a[i]
 	}
 	a[i] = tmp
 	mid = i
-	quick(a[l:mid], l, mid)
-	quick(a[mid+1:r], mid+1, r)
+	quick(a, l, mid-1)
+	quick(a, mid+1, r)
 }

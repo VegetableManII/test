@@ -1,6 +1,6 @@
 package main
 
-import . "study/newcoder/mylist"
+import . "study/leetcode/mylist"
 
 /*
 思路：

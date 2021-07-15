@@ -1,7 +1,7 @@
 package main
 
 import (
-	"study/newcoder/mylist"
+	"study/leetcode/mylist"
 )
 
 /*

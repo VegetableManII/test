@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"study/newcoder/mylist"
+	"study/leetcode/mylist"
 )
 
 /*

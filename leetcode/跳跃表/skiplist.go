@@ -17,8 +17,8 @@ type LinkedList struct {
 	Level   int
 }
 type SkipList struct {
-	// 这里为什么用 值类型？
-	List       LinkedList
+	List LinkedList
+	// 零级索引  即数据内容
 	FirstIndex LinkedList
 	// 一级索引
 	SecondIndex LinkedList
@@ -30,6 +30,43 @@ func InitSkipList() {
 	sl := SkipList{}
 	sl.initSkiplist(data)
 	sl.add(11)
+	showSkipList(sl)
+}
+
+func showSkipList(sl SkipList) {
+	showSkipLinkedList(sl.SecondIndex, 3)
+	fmt.Println()
+	showSkipLinkedList(sl.FirstIndex, 2)
+	fmt.Println()
+	showSkipLinkedList(sl.List, 1)
+}
+
+func showSkipLinkedList(link LinkedList, name int) {
+	var currrentNode *Node
+	currrentNode = link.Head
+	for {
+		i := 1
+		fmt.Print(name, "-Node:", currrentNode.Data)
+		if currrentNode.NextPoint == nil {
+			break
+		} else {
+			currrentNode = currrentNode.NextPoint
+		}
+		if name == 1 {
+			fmt.Print("——————————>")
+		} else if name == 2 {
+			for i <= 3 {
+				fmt.Print("——————————>")
+				i++
+			}
+		} else {
+			for i <= 7 {
+				fmt.Print("——————————>")
+				i++
+			}
+		}
+	}
+	fmt.Println("")
 }
 
 func (sl *SkipList) initSkiplist(list []int) {

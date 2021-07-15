@@ -1,7 +1,7 @@
 package main
 
 import (
-	. "study/newcoder/tree"
+	. "study/leetcode/tree"
 )
 
 func main() {

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math"
 
-	. "study/newcoder/tree"
+	. "study/leetcode/tree"
 )
 
 var preNode = math.MinInt32

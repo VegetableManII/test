@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math"
 
-	. "study/newcoder/tree"
+	. "study/leetcode/tree"
 )
 
 func main() {

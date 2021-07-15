@@ -27,7 +27,7 @@ func wr(ch chan<- int) {
 	close(ch)
 }
 
-func main() {
+func Mmain() {
 	test(&B{})
 }
 

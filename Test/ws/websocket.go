@@ -3,7 +3,6 @@ package main
 import (
 	"net/http"
 
-	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 )
 
@@ -13,10 +12,6 @@ var upGrader = websocket.Upgrader{
 	},
 }
 
-func ping(c *gin.Context) {
-	ws, err := upGrader.Upgrade(c.Writer)
-}
-
 func main() {
-	websocket.Message
+
 }

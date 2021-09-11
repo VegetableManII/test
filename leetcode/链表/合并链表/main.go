@@ -1,7 +1,7 @@
 package main
 
 import (
-	"study/leetcode/mylist"
+	"Algorithm-Ex/leetcode/mylist"
 )
 
 func main() {

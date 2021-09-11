@@ -1,7 +1,7 @@
 package main
 
 import (
-	. "study/leetcode/mylist"
+	. "Algorithm-Ex/leetcode/mylist"
 )
 
 func reverseBetween(head *ListNode, m, n int) *ListNode {

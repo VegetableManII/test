@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"study/leetcode/mylist"
+	"Algorithm-Ex/leetcode/mylist"
 )
 
 /*

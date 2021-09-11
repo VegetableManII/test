@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	. "study/leetcode/tree"
+	. "Algorithm-Ex/leetcode/tree"
 )
 
 func main() {

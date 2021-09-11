@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"sort"
 
-	. "study/leetcode/tree"
+	. "Algorithm-Ex/leetcode/tree"
 )
 
 func main() {

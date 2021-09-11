@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"study/leetcode/tree"
+	"Algorithm-Ex/leetcode/tree"
 )
 
 // 递归函数 切片要用取址

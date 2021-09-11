@@ -1,6 +1,6 @@
 package main
 
-import . "study/leetcode/mylist"
+import . "Algorithm-Ex/leetcode/mylist"
 
 /*
 分治，链表两两合并

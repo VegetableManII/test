@@ -24,13 +24,18 @@ func init() {
 	luas = make(map[string]*redis.Script)
 	scriptStr := map[string]string{
 		"s1": `
+		-- local count = 0
 		if ( redis.call('ttl',KEYS[1]) <= -1 )  -- [ 如果模板不存在或未设置ttl ]
 		then
+			-- count = redis.call('incr',KEYS[1])
 			redis.call('incr',KEYS[1])
 			redis.call('expire',KEYS[1],ARGV[1])
 		else
+			-- count = redis.call('incr',KEYS[1])
 			redis.call('incr',KEYS[1])
 		end
+		-- return count
+		return redis.call('get',KEYS[1])
 		`,
 		"s2": `
 			local res = redis.call('get',KEYS[1])
@@ -69,7 +74,7 @@ func main() {
 // eg:
 //   ExecScript("script1",numkeys,key1,key2 [key...],arg [arg...])
 //   ExecScript("script2",numkeys,key1,key2 [key...],arg [arg...])
-func (rc *RedisConnSt) EvalScript(script string, numkey int, argvs ...interface{}) (string, error) {
+func (rc *RedisConnSt) EvalScript(script string, numkey int, argvs ...interface{}) (interface{}, error) {
 	if _, ok := luas[script]; !ok {
 		return "", nil
 	}

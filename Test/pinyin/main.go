@@ -8,8 +8,15 @@ import (
 )
 
 func main() {
-	hans := "招商银行"
-	tunes := pinyin.LazyPinyin(hans, pinyin.NewArgs())
+	hans := "abc招商银行"
+	tunes := pinyin.LazyPinyin(hans, pinyin.Args{
+		Style:     pinyin.Normal,
+		Heteronym: false,
+		Separator: "",
+		Fallback: func(r rune, a pinyin.Args) []string {
+			return []string{string(r)}
+		},
+	})
 	res := strings.Join(tunes, "")
 	fmt.Println(fmt.Sprintf("captcha_%s", res))
 }

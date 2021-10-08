@@ -1,15 +1,12 @@
 package graphql
 
 import (
-	"encoding/json"
-
 	"github.com/graphql-go/graphql"
 )
 
 type graphiQL struct {
-	query
+	// query
 }
-
 
 const queryAllRoles = `query {
     allRoles(filter:JSON,pager:{},keyword:""){
@@ -99,5 +96,5 @@ var mutationType = graphql.NewObject(graphql.ObjectConfig{
 )
 
 func main() {
-	json.NewEncoder()
+	// json.NewEncoder()
 }

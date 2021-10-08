@@ -1,16 +1,15 @@
 package main
 
 import (
-	"log"
 	"math"
 )
 
-func main() {
-	a := []int{1}
-	b := []int{2, 3, 4}
-	log.Println(binarSearch(a, b))
-	log.Println(binarSearch(b, a))
-}
+// func main() {
+// 	a := []int{1}
+// 	b := []int{2, 3, 4}
+// 	log.Println(binarSearch(a, b))
+// 	log.Println(binarSearch(b, a))
+// }
 
 func binarSearch(nums1, nums2 []int) float64 {
 	// 特殊处理

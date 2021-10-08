@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"sort"
 )
 
@@ -11,7 +12,7 @@ type Interval struct {
 }
 type IntervalSlice []*Interval
 
-func main1() {
+func main() {
 	res := merge([]*Interval{
 		{2, 3}, {2, 2}, {3, 3}, {1, 3}, {5, 7}, {2, 2}, {4, 6},
 	})
@@ -28,6 +29,19 @@ func merge(intervals []*Interval) []*Interval {
 	if len(intervals) == 0 {
 		return nil
 	}
+	test := [][]int{
+		{2, 3},
+		{1, 4},
+		{3, 5},
+	}
+	slice := make([]*Interval, 0, 1)
+	for _, v := range test {
+		slice = append(slice, &Interval{
+			Start: v[0],
+			End:   v[1],
+		})
+	}
+	log.Println(slice)
 	sort.Sort(IntervalSlice(intervals))
 	res := []*Interval{intervals[0]}
 	cur := intervals[0].End
@@ -42,6 +56,12 @@ func merge(intervals []*Interval) []*Interval {
 			cur = v.End
 		}
 	}
+	var space [][]int
+	for _, v := range res {
+		temp := []int{v.Start, v.End}
+		space = append(space, temp)
+	}
+	log.Println(space)
 	return res
 }
 func (a IntervalSlice) Len() int           { return len(a) }

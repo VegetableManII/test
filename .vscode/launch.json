@@ -15,12 +15,12 @@
         {
             "name": "Connect to server",
             "type": "go",
-            "request": "launch",
+            "request": "attach",
             "mode": "remote",
-            "remotePath": "/Users/",
-            "port": 2345,
+            "remotePath": "/Users/jack/go/src/Algorithm-Ex/code/11",
+            "port": 55083,
             "host": "127.0.0.1",
-            "program": "/Users/",
+            "program": "/Users/jack/go/src/Algorithm-Ex/code/11",
         },
         
     ]

@@ -6,25 +6,26 @@ import (
 	"net"
 	"os"
 )
+
 func process(cnn net.Conn) {
-	msg := make([]byte,256)
+	msg := make([]byte, 256)
 	for {
-		n,err := cnn.Read(msg)
+		n, err := cnn.Read(msg)
 		if err != nil {
 			log.Fatal(err)
 		}
 		fmt.Println(string(msg[0:n]))
 	}
 }
-func main() {
+func _main() {
 	p := os.Args[1]
-	fmt.Println("port"+p)
-	listen,err := net.Listen("tcp","localhost:"+p)
+	fmt.Println("port" + p)
+	listen, err := net.Listen("tcp", "localhost:"+p)
 	if err != nil {
 		log.Fatal(err)
 	}
 	for {
-		con,err := listen.Accept()
+		con, err := listen.Accept()
 		if err != nil {
 			log.Fatal(err)
 		}

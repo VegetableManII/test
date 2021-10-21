@@ -18,13 +18,13 @@ type A struct {
 	Field_c time.Time `json:"field_c"`
 	Field_d int       `json:"field_d"`
 	Field_e string    `json:"field_e"`
-	Field_f string    `json:"field_f"`
+	Field_f time.Time `json:"field_f"`
 	Field_g int       `json:"field_g"`
 	Field_h string    `json:"field_h"`
 	Field_i int       `json:"field_i"`
 	Field_j int       `json:"field_j"`
 	Field_k string    `json:"field_k"`
-	Field_l string    `json:"field_l"`
+	Field_l time.Time `json:"field_l"`
 }
 type Rule struct {
 	Field     string `json:"field"`
@@ -46,7 +46,14 @@ func main() {
 	defer db.Close()
 	atest := A{
 		Field_c: time.Date(1999, 1, 1, 0, 0, 0, 0, time.Local),
+		Field_a: 3,
+		Field_b: "hahaha",
 	}
+	name := reflect.TypeOf(A{}).Name()
+	log.Println(name)
+
+	return
+
 	Obj := new(Object)
 	Obj.ObjA = &atest
 	res, e := db.Query("SELECT * FROM t2")

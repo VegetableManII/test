@@ -1,4 +1,4 @@
-package main
+package questions
 
 import (
 	"database/sql"
@@ -18,7 +18,7 @@ func (Record) TableName() string {
 	return "t1"
 }
 
-func main() {
+func SQLPartation() {
 	db, err := sql.Open("mysql", "root:jiaoxueming@tcp(127.0.0.1:3306)/test?charset=utf8")
 	if err != nil {
 		log.Fatal(err)

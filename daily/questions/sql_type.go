@@ -1,4 +1,4 @@
-package main
+package questions
 
 import (
 	"database/sql"
@@ -17,7 +17,7 @@ type rules struct {
 	Rules         string `gorm:"column:rules"`
 }
 
-func main() {
+func SQLType() {
 	db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/test?charset=utf8")
 	if err != nil {
 		log.Fatal(err)

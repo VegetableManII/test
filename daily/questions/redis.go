@@ -1,4 +1,4 @@
-package main
+package questions
 
 import (
 	"errors"
@@ -44,7 +44,7 @@ func init() {
 	}
 }
 
-func main() {
+func PlayRedis() {
 	c, e := redis.Dial("tcp", "127.0.0.1:6379",
 		redis.DialClientName("test"),
 		redis.DialConnectTimeout(1*time.Second),

@@ -1,4 +1,4 @@
-package main
+package questions
 
 import (
 	"fmt"
@@ -17,7 +17,7 @@ func process(cnn net.Conn) {
 		fmt.Println(string(msg[0:n]))
 	}
 }
-func _main() {
+func Server_Main() {
 	p := os.Args[1]
 	fmt.Println("port" + p)
 	listen, err := net.Listen("tcp", "localhost:"+p)

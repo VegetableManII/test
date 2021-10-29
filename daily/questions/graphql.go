@@ -1,4 +1,4 @@
-package graphql
+package questions
 
 import (
 	"github.com/graphql-go/graphql"
@@ -95,6 +95,6 @@ var mutationType = graphql.NewObject(graphql.ObjectConfig{
 },
 )
 
-func main() {
+func UseGraphQL() {
 	// json.NewEncoder()
 }

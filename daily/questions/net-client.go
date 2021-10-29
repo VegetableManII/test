@@ -1,4 +1,4 @@
-package main
+package questions
 
 import (
 	"bufio"
@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-func main() {
+func Client_Main() {
 	conn, err := net.Dial("tcp", "127.0.0.1:4399")
 	if err != nil {
 		log.Fatalln("[DEBUG]dial error ", err)

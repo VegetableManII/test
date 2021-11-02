@@ -1,5 +1,7 @@
 package main
 
-func main() {
+import "study/daily/questions"
 
+func main() {
+	questions.SQLType()
 }

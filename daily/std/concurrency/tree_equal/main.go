@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"study/Test/std/concurrency/tree"
+	"study/daily/std/concurrency/tree"
 )
 
 // Walk 步进 tree t 将所有的值从 tree 发送到 channel ch。

@@ -3,6 +3,7 @@ module study
 go 1.17
 
 require (
+	git.lianjia.com/jiaoxueming01/keboot-go-library v1.0.18
 	github.com/boltdb/bolt v1.3.1
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/gomodule/redigo v1.8.5

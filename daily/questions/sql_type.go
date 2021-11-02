@@ -1,7 +1,6 @@
 package questions
 
 import (
-	"database/sql"
 	"log"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -19,10 +18,10 @@ type Rules struct {
 }
 
 func SQLType() {
-	db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/rmp?charset=utf8")
-	if err != nil {
-		log.Fatal(err)
-	}
+	// db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/rmp?charset=utf8")
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
 	// var res *sql.Rows
 	// if res, err = db.Query("select type.a from type"); err != nil {
 	// 	log.Println(err)
@@ -39,7 +38,7 @@ func SQLType() {
 	// }
 	// orm
 	gormdb, err := gorm.Open(mysql.New(mysql.Config{
-		Conn: db,
+		DSN: "root:@tcp(127.0.0.1:3306)/rmp?charset=utf8",
 	}), &gorm.Config{})
 	if err != nil {
 		log.Fatal(err)

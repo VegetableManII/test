@@ -359,3 +359,33 @@ func URLDecoded() {
 	// }
 
 }
+
+type tiny struct {
+	C int
+}
+
+type Pointer struct {
+	A int
+	B string
+	c *tiny
+}
+
+func SomeFunc() *Pointer {
+	return nil
+}
+
+func PrintPointerStu() {
+	t1 := &Pointer{
+		A: 1,
+		B: "一",
+		c: new(tiny),
+	}
+	log.Println(t1)
+	t1.c.C = 2
+	log.Println(t1)
+	log.Printf("%v\n", t1)
+	t1 = new(Pointer)
+	log.Println(t1)
+	t1 = SomeFunc()
+	log.Println(t1)
+}

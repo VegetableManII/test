@@ -1,7 +1,10 @@
 package main
 
-import "study/daily/questions"
+import (
+	"study/daily/questions"
+)
 
 func main() {
-	questions.UdpBroadcastReceive()
+	questions.UdpBroadcastAsyncReceive()
+	//send()
 }

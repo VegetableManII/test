@@ -9,44 +9,83 @@ import (
 
 // '0' = 48 = 0x30
 
-// 广播服务端接收消息
+// 接收广播消息
 func UdpBroadcastReceive() {
-	l, e := net.ListenUDP("udp", &net.UDPAddr{
-		IP:   net.IPv4zero,
-		Port: 12345,
-	})
+	// local address
+	la, err := net.ResolveUDPAddr("udp4", "0.0.0.0:12345")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	conn, e := net.ListenUDP("udp4", la)
 	if e != nil {
 		log.Panicln(e)
 	}
-	log.Println("listen on", l.LocalAddr().String())
-
-	data := make([]byte, 1024)
+	log.Println("listen on", conn.LocalAddr().String())
+	// data := make([]byte, 0, 64) // ReadFromUDP always return n = 0
+	data := make([]byte, 32)
+	text := ""
 	for {
-		n, remote, e := l.ReadFromUDP(data)
+		n, remote, e := conn.ReadFromUDP(data)
 		if e != nil {
 			log.Panicln(e)
 		}
-		if remote != nil {
-			log.Println("remote", remote, n)
-			log.Println("msg", string(data))
-			text := ""
-			fmt.Scanln(&text)
-			if e != nil {
-				log.Panicln(e)
-			}
-			log.Println(text)
-			_, e = l.WriteToUDP(stringToBytes(text), remote)
-			if e != nil {
-				log.Panicln(e)
-			}
-		} else {
-			time.Sleep(5 * time.Second)
+		log.Printf("R[%v]: %v\n", n, data[:n])
+		// io.Copy(os.Stdout, conn)
+		_, e = fmt.Scanln(&text)
+		if e != nil {
+			log.Panicln(e)
 		}
-		data = data[:0] // 清空缓冲区
+		bs := stringToBytes(text)
+		n, e = conn.WriteToUDP(bs, remote)
+		if e != nil {
+			log.Panicln(e)
+		}
+		log.Printf("S[%v]: %v\n", n, bs)
+		data = data[:0]
 	}
 }
 
-var msg = []byte{0x01, 0x01, 0x00, 0x00, 0x12, 0x34, 0x56, 0x78}
+// 接收广播消息
+func UdpBroadcastAsyncReceive() {
+	// local address
+	la, err := net.ResolveUDPAddr("udp4", "0.0.0.0:12345")
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	conn, e := net.ListenUDP("udp4", la)
+	if e != nil {
+		log.Panicln(e)
+	}
+	log.Println("listen on", conn.LocalAddr().String())
+
+	// data := make([]byte, 0, 64) // ReadFromUDP always return n = 0
+	data := make([]byte, 16)
+	n, remote, e := conn.ReadFromUDP(data)
+	if e != nil {
+		log.Panicln(e)
+	}
+	log.Printf("R[%v]: %v\n", n, data[:n])
+	go func() {
+		for {
+			n, remote, e = conn.ReadFromUDP(data)
+			if e != nil {
+				log.Panicln(e)
+			}
+			log.Printf("R[%v]: %v\n", n, data[:n])
+			time.Sleep(500 * time.Millisecond)
+		}
+	}()
+	for {
+		n, e = conn.WriteToUDP(msg, remote)
+		if e != nil {
+			log.Panicln(e)
+		}
+		log.Printf("S[%v]: %v\n", n, msg)
+		time.Sleep(time.Second)
+	}
+}
 
 func stringToBytes(s string) []byte {
 	b := make([]byte, 0, len(s))
@@ -56,30 +95,36 @@ func stringToBytes(s string) []byte {
 	return b
 }
 
+var msg = []byte{0x01, 0x01, 0x00, 0x00, 0x12, 0x34, 0x56, 0x78}
+
 // 广播客户端主动发送广播消息
 func UdpBroadcastSend() {
-	buf := make([]byte, 0, 1024)
-	la, err := net.ResolveUDPAddr("udp4", ":11111")
+	buf := make([]byte, 32)
+	la, err := net.ResolveUDPAddr("udp4", ":12345")
 	if err != nil {
 		log.Panicln(err)
 	}
-	ra, err := net.ResolveUDPAddr("udp4", "255.255.255.255:12345")
+	ra, err := net.ResolveUDPAddr("udp4", "255.255.255.255:11111")
 	if err != nil {
 		log.Panicln(err)
 	}
-	conn, err := net.DialUDP("udp4", la, ra)
+	conn, err := net.ListenUDP("udp4", la)
 	if err != nil {
 		log.Panicln(err)
 	}
 
-	conn.Write([]byte("start work"))
+	conn.WriteToUDP([]byte("start work"), ra)
 	for {
-		_, _, err = conn.ReadFromUDP(buf)
+		n, r, err := conn.ReadFromUDP(buf)
 		if err != nil {
 			log.Panicln(err)
 		}
-		log.Println(string(buf))
-		_, err := conn.Write(msg)
+		if r == nil || n == 0 {
+			log.Println("empty message")
+			time.Sleep(2 * time.Second)
+		}
+		log.Println(buf)
+		_, err = conn.WriteToUDP(buf, ra)
 		if err != nil {
 			log.Panicln(err)
 		}

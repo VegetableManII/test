@@ -5,6 +5,6 @@ import (
 )
 
 func main() {
-	questions.UdpBroadcastAsyncReceive()
+	questions.Sin()
 	//send()
 }

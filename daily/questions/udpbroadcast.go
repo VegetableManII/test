@@ -74,7 +74,7 @@ func UdpBroadcastAsyncReceive() {
 				log.Panicln(e)
 			}
 			log.Printf("R[%v]: %v\n", n, data[:n])
-			time.Sleep(500 * time.Millisecond)
+			time.Sleep(3 * time.Second)
 		}
 	}()
 	for {

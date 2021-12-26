@@ -1,28 +1,5 @@
 package questions
 
-/*
-  #include <stdio.h>
-  #include <unistd.h>
-  #include <termios.h>
-  char getch(){
-      char ch = 0;
-      struct termios old = {0};
-      fflush(stdout);
-      if( tcgetattr(0, &old) < 0 ) perror("tcsetattr()");
-      old.c_lflag &= ~ICANON;
-      old.c_lflag &= ~ECHO;
-      old.c_cc[VMIN] = 1;
-      old.c_cc[VTIME] = 0;
-      if( tcsetattr(0, TCSANOW, &old) < 0 ) perror("tcsetattr ICANON");
-      if( read(0, &ch,1) < 0 ) perror("read()");
-      old.c_lflag |= ICANON;
-      old.c_lflag |= ECHO;
-      if(tcsetattr(0, TCSADRAIN, &old) < 0) perror("tcsetattr ~ICANON");
-      return ch;
-  }
-*/
-import "C"
-
 // stackoverflow.com/questions/14094190/golang-function-similar-to-getchar
 
 import (
@@ -89,22 +66,20 @@ func RecordMicrophoneToWAV() {
 
 	//defer waveWriter.Close()
 
-	go func() {
-		key := C.getch()
-		fmt.Println()
-		fmt.Println("Cleaning up ...")
-		if key == 27 {
-			// better to control
-			// how we close then relying on defer
-			waveWriter.Close()
-			stream.Close()
-			portaudio.Terminate()
-			fmt.Println("Play", audioFileName, "with a audio player to hear the result.")
-			os.Exit(0)
-
-		}
-
-	}()
+	// go func() {
+	// 	key := C.getch()
+	// 	fmt.Println()
+	// 	fmt.Println("Cleaning up ...")
+	// 	if key == 27 {
+	// 		// better to control
+	// 		// how we close then relying on defer
+	// 		waveWriter.Close()
+	// 		stream.Close()
+	// 		portaudio.Terminate()
+	// 		fmt.Println("Play", audioFileName, "with a audio player to hear the result.")
+	// 		os.Exit(0)
+	// 	}
+	// }()
 
 	// recording in progress ticker. From good old DOS days.
 	ticker := []string{

@@ -5,6 +5,6 @@ import (
 )
 
 func main() {
-	questions.Sin()
+	questions.VoiceCaller()
 	//send()
 }

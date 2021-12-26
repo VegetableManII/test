@@ -66,20 +66,7 @@ func RecordMicrophoneToWAV() {
 
 	//defer waveWriter.Close()
 
-	// go func() {
-	// 	key := C.getch()
-	// 	fmt.Println()
-	// 	fmt.Println("Cleaning up ...")
-	// 	if key == 27 {
-	// 		// better to control
-	// 		// how we close then relying on defer
-	// 		waveWriter.Close()
-	// 		stream.Close()
-	// 		portaudio.Terminate()
-	// 		fmt.Println("Play", audioFileName, "with a audio player to hear the result.")
-	// 		os.Exit(0)
-	// 	}
-	// }()
+	go ExitWithESC(stream)
 
 	// recording in progress ticker. From good old DOS days.
 	ticker := []string{

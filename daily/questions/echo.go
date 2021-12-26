@@ -12,7 +12,7 @@ func Echo() {
 	e := newEcho(time.Second / 3)
 	defer e.Close()
 	chk(e.Start())
-	time.Sleep(4 * time.Second)
+	time.Sleep(60 * time.Second)
 	chk(e.Stop())
 }
 

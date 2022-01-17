@@ -35,16 +35,16 @@ func handlep(listener net.Listener) {
 				}
 				// 连接建立完成后，拷贝双方的io以实现隧道通信
 				handlewg.Add(1)
-				go copy(remote, connection, &handlewg)
+				go _copy(remote, connection, &handlewg)
 				handlewg.Add(1)
-				go copy(connection, remote, &handlewg)
+				go _copy(connection, remote, &handlewg)
 				remote.Close()
 				connection.Close()
 			}()
 		}
 	}
 }
-func copy(from, to net.Conn, wg *sync.WaitGroup) {
+func _copy(from, to net.Conn, wg *sync.WaitGroup) {
 	defer wg.Done()
 	if _, err := io.Copy(to, from); err != nil {
 		// io 复制出错，返回

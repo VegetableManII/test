@@ -15,6 +15,7 @@ require (
 )
 
 require (
+	github.com/VegetableManII/volte v0.0.0-20211222121309-859d0dc58cca // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.3 // indirect
 	golang.org/x/sys v0.0.0-20211216021012-1d35b9e2eb4e // indirect

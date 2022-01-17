@@ -1,6 +1,8 @@
 package questions
 
 import (
+	"bytes"
+	"encoding/binary"
 	"fmt"
 	"log"
 	"net"
@@ -46,6 +48,13 @@ func UdpBroadcastReceive() {
 	}
 }
 
+type EpcMsg struct {
+	_type   byte
+	_method byte
+	_size   [2]byte
+	data    [28]byte
+}
+
 // 接收广播消息
 func UdpBroadcastAsyncReceive() {
 	// local address
@@ -61,29 +70,43 @@ func UdpBroadcastAsyncReceive() {
 	log.Println("listen on", conn.LocalAddr().String())
 
 	// data := make([]byte, 0, 64) // ReadFromUDP always return n = 0
-	data := make([]byte, 16)
+	data := make([]byte, 1024)
 	n, remote, e := conn.ReadFromUDP(data)
 	if e != nil {
 		log.Panicln(e)
 	}
-	log.Printf("R[%v]: %v\n", n, data[:n])
 	go func() {
 		for {
 			n, remote, e = conn.ReadFromUDP(data)
 			if e != nil {
 				log.Panicln(e)
 			}
-			log.Printf("R[%v]: %v\n", n, data[:n])
+			log.Printf("R[%v]: %v(string)", n, string(data[4:n]))
 			time.Sleep(3 * time.Second)
 		}
 	}()
-	time.Sleep(5 * time.Second)
-	n, e = conn.WriteToUDP(msg, remote)
+	da := []byte("imsi=6651234545135\r\nmethod=md5,sha256")
+	dataarray := [28]byte{}
+	copy(dataarray[:], da)
+	m := EpcMsg{
+		_type:   0x01,
+		_method: 0x00,
+		_size:   [2]byte{0, 0},
+		data:    dataarray,
+	}
+
+	var buf bytes.Buffer
+	err = binary.Write(&buf, binary.BigEndian, &m)
+	if err != nil {
+		log.Panicln(err)
+	}
+
+	n, e = conn.WriteToUDP(buf.Bytes(), remote)
 	if e != nil {
 		log.Panicln(e)
 	}
-	log.Printf("S[%v]: %v\n", n, msg)
-	time.Sleep(120 * time.Second)
+	log.Printf("S[%v]: %v\n", n, buf.Bytes())
+	time.Sleep(10 * time.Second)
 }
 
 func stringToBytes(s string) []byte {

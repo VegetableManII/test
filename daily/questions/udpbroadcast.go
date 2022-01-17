@@ -49,7 +49,7 @@ func UdpBroadcastReceive() {
 // 接收广播消息
 func UdpBroadcastAsyncReceive() {
 	// local address
-	la, err := net.ResolveUDPAddr("udp4", "0.0.0.0:12345")
+	la, err := net.ResolveUDPAddr("udp4", "0.0.0.0:65533")
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -77,14 +77,13 @@ func UdpBroadcastAsyncReceive() {
 			time.Sleep(3 * time.Second)
 		}
 	}()
-	for {
-		n, e = conn.WriteToUDP(msg, remote)
-		if e != nil {
-			log.Panicln(e)
-		}
-		log.Printf("S[%v]: %v\n", n, msg)
-		time.Sleep(time.Second)
+	time.Sleep(5 * time.Second)
+	n, e = conn.WriteToUDP(msg, remote)
+	if e != nil {
+		log.Panicln(e)
 	}
+	log.Printf("S[%v]: %v\n", n, msg)
+	time.Sleep(120 * time.Second)
 }
 
 func stringToBytes(s string) []byte {
@@ -95,7 +94,7 @@ func stringToBytes(s string) []byte {
 	return b
 }
 
-var msg = []byte{0x01, 0x01, 0x00, 0x00, 0x12, 0x34, 0x56, 0x78}
+var msg = []byte{0x01, 0x00, 0x00, 0x00, 0x12, 0x34, 0x56, 0x78}
 
 // 广播客户端主动发送广播消息
 func UdpBroadcastSend() {

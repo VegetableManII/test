@@ -51,7 +51,7 @@ func UdpBroadcastReceive() {
 type EpcMsg struct {
 	_type   byte
 	_method byte
-	_size   [2]byte
+	_size   uint16
 	data    [28]byte
 }
 
@@ -68,8 +68,6 @@ func UdpBroadcastAsyncReceive() {
 		log.Panicln(e)
 	}
 	log.Println("listen on", conn.LocalAddr().String())
-
-	// data := make([]byte, 0, 64) // ReadFromUDP always return n = 0
 	data := make([]byte, 1024)
 	n, remote, e := conn.ReadFromUDP(data)
 	if e != nil {
@@ -85,13 +83,21 @@ func UdpBroadcastAsyncReceive() {
 			time.Sleep(3 * time.Second)
 		}
 	}()
-	da := []byte("imsi=6651234545135\r\nmethod=md5,sha256")
+	da := []byte("SIP/2.0 200 OK\r\n" +
+		"CSeq:   2     \r\n" +
+		"    INVITE\r\n" +
+		"Call-ID:\tcheesecake1729\r\n" +
+		"Max-Forwards:\t\r\n" +
+		"\t63\r\n" +
+		"\r\n" +
+		"Everything is awesome.")
+	size := len(da)
 	dataarray := [28]byte{}
 	copy(dataarray[:], da)
 	m := EpcMsg{
-		_type:   0x01,
+		_type:   0x00,
 		_method: 0x00,
-		_size:   [2]byte{0, 0},
+		_size:   uint16(size),
 		data:    dataarray,
 	}
 
@@ -106,7 +112,7 @@ func UdpBroadcastAsyncReceive() {
 		log.Panicln(e)
 	}
 	log.Printf("S[%v]: %v\n", n, buf.Bytes())
-	time.Sleep(10 * time.Second)
+	time.Sleep(5 * time.Second)
 }
 
 func stringToBytes(s string) []byte {

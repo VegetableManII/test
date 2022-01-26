@@ -1,8 +1,6 @@
 package questions
 
 import (
-	"bytes"
-	"encoding/binary"
 	"fmt"
 	"log"
 	"net"
@@ -52,7 +50,7 @@ type EpcMsg struct {
 	_type   byte
 	_method byte
 	_size   uint16
-	data    [28]byte
+	data    [1020]byte
 }
 
 // 接收广播消息
@@ -73,6 +71,7 @@ func UdpBroadcastAsyncReceive() {
 	if e != nil {
 		log.Panicln(e)
 	}
+	log.Printf("R[%v]: %v(string)", n, string(data[4:n]))
 	go func() {
 		for {
 			n, remote, e = conn.ReadFromUDP(data)
@@ -83,35 +82,28 @@ func UdpBroadcastAsyncReceive() {
 			time.Sleep(3 * time.Second)
 		}
 	}()
-	da := []byte("SIP/2.0 200 OK\r\n" +
-		"CSeq:   2     \r\n" +
-		"    INVITE\r\n" +
-		"Call-ID:\tcheesecake1729\r\n" +
-		"Max-Forwards:\t\r\n" +
-		"\t63\r\n" +
-		"\r\n" +
-		"Everything is awesome.")
-	size := len(da)
-	dataarray := [28]byte{}
-	copy(dataarray[:], da)
-	m := EpcMsg{
-		_type:   0x00,
-		_method: 0x00,
-		_size:   uint16(size),
-		data:    dataarray,
-	}
-
-	var buf bytes.Buffer
-	err = binary.Write(&buf, binary.BigEndian, &m)
-	if err != nil {
-		log.Panicln(err)
-	}
-
-	n, e = conn.WriteToUDP(buf.Bytes(), remote)
+	registWithAuth := []byte("REGISTER sip:apn.sip.voice.ng4t.com SIP/2.0\r\n" +
+		"Via: SIP/2.0/UDP 10.255.1.111:5090;branch=z9hG4bK199912928954841999\r\n" +
+		`From: "User11" <sip:ng40user11@apn.sip.voice.ng4t.com>;tag=690713\r\n` +
+		`To: "User11" <sip:ng40user11@apn.sip.voice.ng4t.com>;tag=690711\r\n` +
+		"Call-ID: RgeX-136783086082016@10.255.1.111\r\n" +
+		"CSeq: 3 REGISTER\r\n" +
+		"Contact: <sip:ng40user11@10.255.1.111:5090>\r\n" +
+		"P-Access-Network-Info: GPP-E-UTRAN-FDD; utran-cell-id-3gpp=11000900708000\r\n" +
+		"Privacy: none\r\n" +
+		`Authorization: Digest username="ng40user11", realm="apn.sip.voice.ng4t.com", nonce="ASNFZ4mrze8BI0VniavN7w6N96ONZLm5QUzhDsa1WA5Abmc0MA==", uri="sip:apn.sip.voice.ng4t.com", qop="auth-int", response="0277781615001a499f1cc1606b773ab2", algorithm=AKAv1-MD5\r\n` +
+		"Allow: INVITE,ACK,OPTIONS,CANCEL,BYE,PRACK,UPDATE,SUBSCRIBE,NOTIFY\r\n" +
+		"Max-Forwards: 70\r\n" +
+		"User-Agent: ng40\r\n" +
+		"Expires: 600000\r\n" +
+		"Content-Length: 0\r\n" +
+		"\r\n")
+	da := registWithAuth
+	n, e = conn.WriteToUDP(da, remote)
 	if e != nil {
 		log.Panicln(e)
 	}
-	log.Printf("S[%v]: %v\n", n, buf.Bytes())
+	log.Printf("S[%v]: %v\n", n, string(da))
 	time.Sleep(5 * time.Second)
 }
 

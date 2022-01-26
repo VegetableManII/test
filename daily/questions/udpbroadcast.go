@@ -84,14 +84,14 @@ func UdpBroadcastAsyncReceive() {
 	}()
 	registWithAuth := []byte("REGISTER sip:apn.sip.voice.ng4t.com SIP/2.0\r\n" +
 		"Via: SIP/2.0/UDP 10.255.1.111:5090;branch=z9hG4bK199912928954841999\r\n" +
-		`From: "User11" <sip:ng40user11@apn.sip.voice.ng4t.com>;tag=690713\r\n` +
-		`To: "User11" <sip:ng40user11@apn.sip.voice.ng4t.com>;tag=690711\r\n` +
+		`From: "User11" <sip:ng40user11@apn.sip.voice.ng4t.com>;tag=690713` + "\r\n" +
+		`To: "User11" <sip:ng40user11@apn.sip.voice.ng4t.com>;tag=690711` + "\r\n" +
 		"Call-ID: RgeX-136783086082016@10.255.1.111\r\n" +
 		"CSeq: 3 REGISTER\r\n" +
 		"Contact: <sip:ng40user11@10.255.1.111:5090>\r\n" +
 		"P-Access-Network-Info: GPP-E-UTRAN-FDD; utran-cell-id-3gpp=11000900708000\r\n" +
 		"Privacy: none\r\n" +
-		`Authorization: Digest username="ng40user11", realm="apn.sip.voice.ng4t.com", nonce="ASNFZ4mrze8BI0VniavN7w6N96ONZLm5QUzhDsa1WA5Abmc0MA==", uri="sip:apn.sip.voice.ng4t.com", qop="auth-int", response="0277781615001a499f1cc1606b773ab2", algorithm=AKAv1-MD5\r\n` +
+		`Authorization: Digest username="ng40user11", realm="apn.sip.voice.ng4t.com", nonce="ASNFZ4mrze8BI0VniavN7w6N96ONZLm5QUzhDsa1WA5Abmc0MA==", uri="sip:apn.sip.voice.ng4t.com", qop="auth-int", response="0277781615001a499f1cc1606b773ab2", algorithm=AKAv1-MD5` + "\r\n" +
 		"Allow: INVITE,ACK,OPTIONS,CANCEL,BYE,PRACK,UPDATE,SUBSCRIBE,NOTIFY\r\n" +
 		"Max-Forwards: 70\r\n" +
 		"User-Agent: ng40\r\n" +

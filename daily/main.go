@@ -3,7 +3,7 @@ package main
 import "study/daily/questions"
 
 func main() {
-	questions.GetNetInterfaces()
+	questions.UdpBroadcastAsyncReceive()
 }
 
 /* func main() {

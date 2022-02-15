@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"os"
+	"os/signal"
+	"syscall"
 	"time"
 )
 
@@ -55,8 +58,10 @@ type EpcMsg struct {
 
 // 接收广播消息
 func UdpBroadcastAsyncReceive() {
+	quit := make(chan os.Signal)
+	signal.Notify(quit, syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
 	// local address
-	la, err := net.ResolveUDPAddr("udp4", "0.0.0.0:65533")
+	la, err := net.ResolveUDPAddr("udp4", "0.0.0.0:65532")
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -71,40 +76,45 @@ func UdpBroadcastAsyncReceive() {
 	if e != nil {
 		log.Panicln(e)
 	}
-	log.Printf("R[%v]: %v(string)", n, string(data[4:n]))
+	log.Printf("R[%v]: %v(string)", n, string(data[:n]))
+	n, e = conn.WriteToUDP([]byte{0xFF, 0xFF, 0xFF, 0xFF}, remote)
+	myid := make([]byte, 4)
+	n, remote, e = conn.ReadFromUDP(myid)
+	if e != nil {
+		log.Panicln(e)
+	}
+	log.Println(myid)
 	go func() {
 		for {
 			n, remote, e = conn.ReadFromUDP(data)
 			if e != nil {
 				log.Panicln(e)
 			}
-			log.Printf("R[%v]: %v(string)", n, string(data[4:n]))
+			log.Printf("R[%v]: %v(string)", n, string(data[:n]))
 			time.Sleep(3 * time.Second)
 		}
 	}()
-	registWithAuth := []byte("REGISTER sip:apn.sip.voice.ng4t.com SIP/2.0\r\n" +
+	registWithAuth := []byte("REGISTER sip:hebeiyidong.3gpp.net SIP/2.0\r\n" +
 		"Via: SIP/2.0/UDP 10.255.1.111:5090;branch=z9hG4bK199912928954841999\r\n" +
-		`From: "User11" <sip:ng40user11@apn.sip.voice.ng4t.com>;tag=690713` + "\r\n" +
-		`To: "User11" <sip:ng40user11@apn.sip.voice.ng4t.com>;tag=690711` + "\r\n" +
+		`From: "jiqimao" <sip:jiqimao@hebeiyidong.3gpp.net>;tag=690713` + "\r\n" +
+		`To: "jiqimao" <sip:jiqimao@hebeiyidong.3gpp.net>;tag=690711` + "\r\n" +
 		"Call-ID: RgeX-136783086082016@10.255.1.111\r\n" +
 		"CSeq: 3 REGISTER\r\n" +
-		"Contact: <sip:ng40user11@10.255.1.111:5090>\r\n" +
-		"P-Access-Network-Info: GPP-E-UTRAN-FDD; utran-cell-id-3gpp=11000900708000\r\n" +
-		"Privacy: none\r\n" +
-		`Authorization: Digest username="ng40user11", realm="apn.sip.voice.ng4t.com", nonce="ASNFZ4mrze8BI0VniavN7w6N96ONZLm5QUzhDsa1WA5Abmc0MA==", uri="sip:apn.sip.voice.ng4t.com", qop="auth-int", response="0277781615001a499f1cc1606b773ab2", algorithm=AKAv1-MD5` + "\r\n" +
+		"Contact: <sip:jiqimao@10.255.1.111:5090>\r\n" +
+		// `Authorization: Digest username="ng40user11"` + "\r\n" + 有P-CSCF产生
 		"Allow: INVITE,ACK,OPTIONS,CANCEL,BYE,PRACK,UPDATE,SUBSCRIBE,NOTIFY\r\n" +
 		"Max-Forwards: 70\r\n" +
-		"User-Agent: ng40\r\n" +
 		"Expires: 600000\r\n" +
 		"Content-Length: 0\r\n" +
 		"\r\n")
-	da := registWithAuth
+
+	da := append(myid, registWithAuth...)
 	n, e = conn.WriteToUDP(da, remote)
 	if e != nil {
 		log.Panicln(e)
 	}
 	log.Printf("S[%v]: %v\n", n, string(da))
-	time.Sleep(5 * time.Second)
+	<-quit
 }
 
 func stringToBytes(s string) []byte {

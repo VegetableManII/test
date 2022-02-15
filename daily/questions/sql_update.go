@@ -2,11 +2,45 @@ package questions
 
 import (
 	"log"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/go-xorm/xorm"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
+
+type Users struct {
+	ID          int64     `xorm:"id"`
+	IMSI        string    `xorm:"imsi"`
+	RootK       string    `xorm:"root_k"`
+	Opc         string    `xorm:"opc"`
+	Mnc         string    `xorm:"mnc"`
+	Mcc         int       `xorm:"mcc"`
+	Apn         string    `xorm:"apn"`
+	IP          string    `xorm:"ip"`
+	SipUsername string    `xorm:"sip_username"`
+	DNS         string    `xorm:"sip_dns"`
+	Ctime       time.Time `xorm:"ctime"` // 记录创建时刻
+	Utime       time.Time `xorm:"utime"` // 记录更新时刻
+}
+
+func XormGet() {
+	engin, err := xorm.NewEngine("mysql", "root:@tcp(127.0.0.1:3306)/volte?charset=utf8")
+	if err != nil {
+		log.Fatalln(err)
+	}
+	engin.ShowSQL(true)
+
+	one := Users{
+		IMSI: "123456789",
+		Mcc:  1,
+	}
+	engin.Get(&one)
+	all := []Users{}
+	engin.Find(&all)
+	log.Println(one)
+}
 
 func SQLUpdateGorm() {
 	gormdb, err := gorm.Open(mysql.New(mysql.Config{

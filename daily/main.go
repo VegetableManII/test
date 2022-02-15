@@ -6,22 +6,12 @@ func main() {
 	questions.UdpBroadcastAsyncReceive()
 }
 
-/* func main() {
-	tmap := map[int]string{
-		1: "1",
-		2: "2",
-		3: "3",
-	}
-	go func() {
-		for i := 0; i < math.MaxInt32; i++ {
-			tmap[i] = strconv.Itoa(i)
-		}
-	}()
+// var uriRexp = regexp.MustCompile("^(SIP\\/[^\\/]+)\\/([^ ]+) ([^;]+)(.+)$")
 
-	go func() {
-		for i := 0; i < math.MaxInt32; i++ {
-			log.Println(tmap[i])
-		}
-	}()
-	time.Sleep(5 * time.Second)
-} */
+// func main() {
+// 	str := "SIP/2.0/U DP TCP 192. 168.0.100:43188;branch=z9hG4bK111643fe9a9f389667c5e7d8873;rport"
+// 	sub := uriRexp.FindStringSubmatch(str)
+// 	for _, v := range sub {
+// 		log.Println(v)
+// 	}
+// }

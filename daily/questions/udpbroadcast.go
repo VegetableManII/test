@@ -77,12 +77,13 @@ func UdpBroadcastAsyncReceive() {
 		log.Panicln(e)
 	}
 	log.Printf("R[%v]: %v(string)", n, string(data[:n]))
-	n, e = conn.WriteToUDP([]byte{0xFF, 0xFF, 0xFF, 0xFF}, remote)
+	n, e = conn.WriteToUDP([]byte{0x0F, 0x0F, 0x0F, 0x0F}, remote)
 	myid := make([]byte, 4)
 	n, remote, e = conn.ReadFromUDP(myid)
 	if e != nil {
 		log.Panicln(e)
 	}
+	log.Printf("R[%v]: %v(string)", n, string(myid[:n]))
 	log.Println(myid)
 	go func() {
 		for {

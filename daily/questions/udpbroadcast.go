@@ -49,16 +49,9 @@ func UdpBroadcastReceive() {
 	}
 }
 
-type EpcMsg struct {
-	_type   byte
-	_method byte
-	_size   uint16
-	data    [1020]byte
-}
-
 // 接收广播消息
 func UdpBroadcastAsyncReceive() {
-	quit := make(chan os.Signal)
+	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
 	// local address
 	la, err := net.ResolveUDPAddr("udp4", "0.0.0.0:65532")
@@ -76,45 +69,39 @@ func UdpBroadcastAsyncReceive() {
 	if e != nil {
 		log.Panicln(e)
 	}
-	log.Printf("R[%v]: %v(string)", n, string(data[:n]))
-	n, e = conn.WriteToUDP([]byte{0x0F, 0x0F, 0x0F, 0x0F}, remote)
-	myid := make([]byte, 4)
-	n, remote, e = conn.ReadFromUDP(myid)
-	if e != nil {
-		log.Panicln(e)
-	}
-	log.Printf("R[%v]: %v(string)", n, string(myid[:n]))
-	log.Println(myid)
+
 	go func() {
 		for {
+			data := make([]byte, 1024)
 			n, remote, e = conn.ReadFromUDP(data)
 			if e != nil {
 				log.Panicln(e)
 			}
-			log.Printf("R[%v]: %v(string)", n, string(data[:n]))
+			log.Printf("R[%v]: %v(string)", n, data[:n])
 			time.Sleep(3 * time.Second)
 		}
 	}()
-	registWithAuth := []byte("REGISTER sip:hebeiyidong.3gpp.net SIP/2.0\r\n" +
-		"Via: SIP/2.0/UDP 10.255.1.111:5090;branch=z9hG4bK199912928954841999\r\n" +
-		`From: "jiqimao" <sip:jiqimao@hebeiyidong.3gpp.net>;tag=690713` + "\r\n" +
-		`To: "jiqimao" <sip:jiqimao@hebeiyidong.3gpp.net>;tag=690711` + "\r\n" +
-		"Call-ID: RgeX-136783086082016@10.255.1.111\r\n" +
-		"CSeq: 3 REGISTER\r\n" +
-		"Contact: <sip:jiqimao@10.255.1.111:5090>\r\n" +
-		// `Authorization: Digest username="ng40user11"` + "\r\n" + 有P-CSCF产生
-		"Allow: INVITE,ACK,OPTIONS,CANCEL,BYE,PRACK,UPDATE,SUBSCRIBE,NOTIFY\r\n" +
-		"Max-Forwards: 70\r\n" +
-		"Expires: 600000\r\n" +
-		"Content-Length: 0\r\n" +
-		"\r\n")
+	CRLF := "\r\n"
+	registWithAuth := []byte("REGISTER sip:hebeiyidong.3gpp.net SIP/2.0" + CRLF +
+		"Via: SIP/2.0/UDP 10.255.1.111:5090;branch=z9hG4bK199912928954841999" + CRLF + // 注册请求携带一个自己的VIP
+		`From: "jiqimao" <sip:jiqimao@hebeiyidong.3gpp.net>;tag=690713` + CRLF +
+		`To: "jiqimao" <sip:jiqimao@hebeiyidong.3gpp.net>;tag=690711` + CRLF + // 注册请求填自己
+		// "Call-ID: RgeX-136783086082016@10.255.1.111" + CRLF + 随便编一个 目前网络侧没有用到
+		// "CSeq: 3 REGISTER" + CRLF +  客户端保证序列
+		// "Contact: <sip:jiqimao@10.255.1.111:5090>" + CRLF + INVITE时需要填写自己实际局域网IP和端口
+		"P-Access-Network-Info: 100231511300031" + CRLF +
+		"Max-Forwards: 70" + CRLF +
+		"Expires: 600000" + CRLF +
+		"Content-Length: 0" + CRLF + CRLF)
 
-	da := append(myid, registWithAuth...)
-	n, e = conn.WriteToUDP(da, remote)
+	// attach := []byte("UTRAN-CELL-ID-3GPP=100231511300031")
+	// msg := append([]byte{0x01, 0x00, 0x00, 0x22}, attach...)
+	// n, e = conn.WriteToUDP(msg, remote)
+	n, e = conn.WriteToUDP(registWithAuth, remote)
 	if e != nil {
 		log.Panicln(e)
 	}
-	log.Printf("S[%v]: %v\n", n, string(da))
+
 	<-quit
 }
 
@@ -125,8 +112,6 @@ func stringToBytes(s string) []byte {
 	}
 	return b
 }
-
-var msg = []byte{0x01, 0x00, 0x00, 0x00, 0x12, 0x34, 0x56, 0x78}
 
 // 广播客户端主动发送广播消息
 func UdpBroadcastSend() {

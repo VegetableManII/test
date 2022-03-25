@@ -82,7 +82,7 @@ func UdpBroadcastAsyncReceive() {
 		}
 	}()
 	CRLF := "\r\n"
-	registWithAuth := []byte("INVITE sip:jiqimao@hebeiyidong.3gpp.net SIP/2.0" + CRLF +
+	registWithAuth := []byte("REGISTER sip:jiqimao@hebeiyidong.3gpp.net SIP/2.0" + CRLF +
 		"Via: SIP/2.0/UDP 10.255.1.111:5090;branch=z9hG4bK199912928954841999" + CRLF + // 注册请求携带一个自己的VIP
 		`From: "jiqimao" <sip:jiqimao@hebeiyidong.3gpp.net>;tag=690713` + CRLF +
 		`To: "jiqimao" <sip:jiqimao@hebeiyidong.3gpp.net>;tag=690711` + CRLF + // 注册请求填自己
@@ -93,19 +93,18 @@ func UdpBroadcastAsyncReceive() {
 		"Max-Forwards: 70" + CRLF +
 		"Expires: 600000" + CRLF +
 		"Content-Length: 0" + CRLF + CRLF)
-
 	<-quit
 	msg := []byte(`{
 		"protocal":"epc",
 		"method":"attach request",
-		"utan-cell-id-3gpp": "100231511300031"
+		"utan-cell-id-3gpp": "100231511300032"
 	}`)
 	n, e = conn.WriteToUDP(msg, remote)
 	_ = registWithAuth
 	// n, e = conn.WriteToUDP(registWithAuth, remote)
-	if e != nil {
-		log.Panicln(e)
-	}
+	// if e != nil {
+	// 	log.Panicln(e)
+	// }
 
 	<-quit
 }

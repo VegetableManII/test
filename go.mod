@@ -8,7 +8,6 @@ require (
 	github.com/go-xorm/xorm v0.7.9
 	github.com/gomodule/redigo v1.8.6
 	github.com/gordonklaus/portaudio v0.0.0-20200911161147-bb74aa485641
-	github.com/graphql-go/graphql v0.8.0
 	github.com/mozillazg/go-pinyin v0.19.0
 	github.com/zenwerk/go-wave v0.0.0-20190102022600-1be84bfef50c
 	gorm.io/driver/mysql v1.2.2

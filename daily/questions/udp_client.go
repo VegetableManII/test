@@ -54,7 +54,7 @@ func UdpBroadcastAsyncReceive() {
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
 	// local address
-	la, err := net.ResolveUDPAddr("udp4", "0.0.0.0:65532")
+	la, err := net.ResolveUDPAddr("udp4", "0.0.0.0:33333")
 	if err != nil {
 		fmt.Println(err)
 		return
